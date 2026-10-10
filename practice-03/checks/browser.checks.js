@@ -147,10 +147,20 @@ async function waitForSelector(selector, timeout = 3000) {
     return cards.length === 3 || `карточек ${cards.length}`;
   });
 
+  check("Пустое состояние: переключаемся на «Все»", () => {
+    doc().querySelector('button[data-filter="all"]').click();
+    const cards = doc().querySelectorAll("#task-list .task-card");
+    return cards.length === 3 || `карточек ${cards.length}`;
+  });
+
   check("Пустое состояние: удаляем все карточки", () => {
-    const cards = Array.from(doc().querySelectorAll("#task-list .task-card"));
-    for (const card of cards) {
-      card.querySelector('button[data-action="delete"]').click();
+    let guard = 0;
+    while (doc().querySelector("#task-list .task-card") && guard < 20) {
+      const card = doc().querySelector("#task-list .task-card");
+      const btn = card.querySelector('button[data-action="delete"]');
+      if (!btn) break;
+      btn.click();
+      guard += 1;
     }
     const remaining = doc().querySelectorAll("#task-list .task-card");
     return remaining.length === 0 || `осталось ${remaining.length}`;
