@@ -1,0 +1,50 @@
+﻿// Фрагмент обработчика переключения статуса из practice-03/src/main.js
+
+export function handleTaskListClick(event) {
+  if (!(event.target instanceof Element)) return;
+
+  const button = event.target.closest("button[data-action]");
+  if (!button || !listElement.contains(button)) return;
+
+  const action = button.dataset.action;
+  if (action !== "toggle" && action !== "delete") return;
+
+  const card = button.closest("li[data-task-id]");
+  if (!card) return;
+
+  const rawId = card.dataset.taskId;
+  const id = Number(rawId);
+
+  if (!Number.isSafeInteger(id) || id <= 0) {
+    showMessage(`Ошибка: некорректный идентификатор "${rawId}"`);
+    return;
+  }
+
+  const task = findTaskById(currentTasks, id);
+  if (!task) {
+    showMessage(`Ошибка: задача с id = ${id} не найдена`);
+    return;
+  }
+
+  let result;
+  if (action === "toggle") {
+    result = setTaskCompleted(currentTasks, id, !task.completed);
+  } else {
+    result = removeTask(currentTasks, id);
+  }
+
+  if (!result.ok) {
+    showMessage(`Ошибка: ${result.error}`);
+    return;
+  }
+
+  currentTasks = result.tasks;
+  clearMessage();
+  renderApp();
+  restoreTaskFocus(id, action);
+}
+
+// Подключение события (выполняется один раз, вне renderApp)
+if (listElement) {
+  listElement.addEventListener("click", handleTaskListClick);
+}
