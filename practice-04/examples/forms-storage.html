@@ -1,0 +1,70 @@
+﻿<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ПР4 — Эксперименты с формой и JSON</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 1rem; max-width: 720px; }
+    section { margin-bottom: 1.25rem; padding: 0.75rem; border: 1px solid #ddd; border-radius: 6px; }
+    h2 { margin-top: 0; font-size: 1rem; }
+    label { display: block; margin: 0.4rem 0 0.2rem; font-size: 0.9rem; }
+    input, button { padding: 0.3rem 0.6rem; font-size: 0.95rem; }
+    button { margin-top: 0.5rem; cursor: pointer; }
+    pre { background: #f5f5f5; padding: 0.5rem; border-radius: 4px; font-size: 0.85rem; overflow-x: auto; }
+  </style>
+</head>
+<body>
+  <h1>ПР4 — Эксперименты с формой и JSON</h1>
+  <p>Открой DevTools → Console. Результаты выводятся туда.</p>
+
+  <section>
+    <h2>Эксперимент 1. Пустое обязательное название</h2>
+    <form id="form-empty" novalidate>
+      <label>Название: <input name="title" required></label>
+      <button type="submit">Отправить</button>
+    </form>
+    <pre id="log-empty">Журнал: —</pre>
+  </section>
+
+  <section>
+    <h2>Эксперимент 2. Только пробелы + setCustomValidity</h2>
+    <form id="form-spaces" novalidate>
+      <label>Название: <input name="title" required></label>
+      <button type="submit">Отправить</button>
+    </form>
+    <pre id="log-spaces">Журнал: —</pre>
+  </section>
+
+  <section>
+    <h2>Эксперимент 3. Сохранить корректные значения</h2>
+    <form id="form-save" novalidate>
+      <label>ID: <input name="id" type="number" min="1" step="1" required></label>
+      <label>Название: <input name="title" maxlength="100" required></label>
+      <label>Приоритет:
+        <select name="priority">
+          <option value="low">Низкий</option>
+          <option value="medium" selected>Средний</option>
+          <option value="high">Высокий</option>
+        </select>
+      </label>
+      <button type="submit">Сохранить</button>
+    </form>
+    <pre id="log-save">Журнал: —</pre>
+  </section>
+
+  <section>
+    <h2>Эксперимент 4. Прочитать сохранённое значение</h2>
+    <button id="btn-read">Прочитать</button>
+    <pre id="log-read">Журнал: —</pre>
+  </section>
+
+  <section>
+    <h2>Эксперимент 5. Повреждённый JSON</h2>
+    <button id="btn-broken">Записать повреждённый JSON и прочитать</button>
+    <pre id="log-broken">Журнал: —</pre>
+  </section>
+
+  <script type="module" src="./forms-storage.js"></script>
+</body>
+</html>
